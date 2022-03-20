@@ -73,10 +73,6 @@ const rentalSchema = new Schema({
         minlength: 10
     },
 
-    NICcopy: {
-        type: String,
-    },
-
 })
 
 const Rental = mongoose.model("Rental", rentalSchema);
