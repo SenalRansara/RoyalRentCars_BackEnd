@@ -47,7 +47,7 @@ router.post("/employee", async (req, res) => {
                     let response = await newEmployee.save();
                     if (response)
                         //console.log(doc);
-                        return res.status(201).send({ message: "newEmployee Added" });
+                        return res.status(201).send({ message: "New Employee Added" });
                 } catch (err) {
                     //console.log("error while saving");
                     return res.status(500).send({ status: "Internal Server Error" });
