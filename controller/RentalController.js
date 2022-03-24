@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const Rental = require("../model/RentalModel")
+const Rental = require("../model/RentalModel");
 const { v4: uuidv4 } = require("uuid");
 
 //create router for add new rental
