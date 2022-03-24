@@ -58,3 +58,19 @@ try {
     console.log("error", err)
 }
 });
+
+
+//router for retrieve data for Added Rental Details
+router.get("/rental/get",async (req,res) => {
+
+    try{
+        const response = await Rental.find();
+        return res.status(200).send({
+            status:"Success",
+            data: response
+        });
+    }catch(error){
+        console.log("Something went wrong while DB connection");
+        return { ok: false};
+    }
+});
