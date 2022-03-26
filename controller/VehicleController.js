@@ -1,0 +1,110 @@
+const router = require("express").Router();
+let Vehicle = require("../model/VehicleModel");
+const { v4: uuidv4 } = require("uuid");
+//const moment = require('moment');
+//const multer = require('multer');
+//const { route } = require("express/lib/application");
+//const upload = multer({ dest: 'uploads/' })
+
+
+//add vehicle details and owner details
+
+router.route("/addVehicle").post((req, res) => {
+
+    const VehicleID = uuidv4();
+    const OwnerName = req.body.OwnerName;
+    const OwnerNIC = req.body.OwnerNIC;
+    const TeleNo = req.body.TeleNo;
+    const Address = req.body.Address;
+    const Email = req.body.Email;
+    const Date = moment(req.body.Date).format('YYYY-MM-DD');
+    const VehicleRegNo = req.body.VehicleRegNo;
+    const VehicleModel = req.body.VehicleModel;
+    const VehicleType = req.body.VehicleType;
+    const VehicleBrand = req.body.VehicleBrand;
+    const Mileage = req.body.Mileage;
+    const InsType = req.body.InsType;
+    const InsComName = req.body.InsComName;
+    const Transmission = req.body.Transmission;
+    const AirC = req.body.AirC;
+    const NoOfSeats = req.body.NoOfSeats;
+    const RatePDay = req.body.RatePDay;
+    const YearsRent = req.body.YearsRent;
+    const vehPic = req.body.imgPath;
+    const vehDoc = req.body.vehDoc;
+
+    const newVehicle = new Vehicle({
+
+        VehicleID,
+        OwnerName,
+        OwnerNIC,
+        TeleNo,
+        Address,
+        Email,
+        Date,
+        VehicleRegNo,
+        VehicleModel,
+        VehicleType,
+        VehicleBrand,
+        Mileage,
+        InsType,
+        InsComName,
+        Transmission,
+        AirC,
+        NoOfSeats,
+        RatePDay,
+        YearsRent,
+        vehPic,
+        vehDoc
+    })
+
+
+    newVehicle.save().then(() => {
+        console.log(req);
+        res.json("Vehicle added");
+
+    }).catch((err) => {
+        console.log(err);
+        return res.status(400).send({ status: "Vehicle already exist!" });
+    })
+
+})
+
+//view data vehicle
+router.route("/view").get((req, res) => {
+    Vehicle.find().then((Vehicles) => {
+        res.json(Vehicles)
+    }).catch((err) => {
+        console.log(err)
+    })
+})
+
+
+router.route("/searchPerDayRentalPrice/:vehicle/:model").get((req, res) => {
+
+    let val = req.params.vehicle.trim();
+    let val1 = req.params.model.trim();
+
+
+    //{$regex: "^" + val + ".*"}this will get to the value starting at the begining of list 
+    Vehicle.find({ VehicleType: { $regex: ".*" + val + ".*", $options: 'i' } }).then((vehicles) => {
+        //res.json(rentals)
+        if (vehicles != null) {
+            Vehicle.findOne({ VehicleModel: { $regex: "^" + val1 + ".*", $options: 'i' } }).then((vehicles) => {
+                res.json(vehicles.RatePDay);
+
+            })
+                .catch((err) => {
+                    console.log(err);
+
+                })
+        }
+
+    }).catch((err) => {
+        console.log(err);
+    })
+
+
+})
+
+module.exports = router;

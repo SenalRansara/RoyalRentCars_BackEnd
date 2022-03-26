@@ -16,6 +16,10 @@ const URL = process.env.MONGODB_URL;
 const Rental = require("./controller/RentalController");
 app.use("/api", Rental);
 
+const Reservation = require("./controller/ReservationController");
+app.use("/api", Reservation);
+
+
 
 mongoose.connect(URL).then(()=> {
     console.log('DB Connected Successfully');
