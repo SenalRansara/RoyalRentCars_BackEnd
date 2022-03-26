@@ -1,13 +1,14 @@
+// const router = require("express").Router();
 const controller = require("express").Router();
 let Reservation = require("../model/reservationModel");
 //const { v4: uuidv4 } = require("uuid");
-const { Router } = require("express");
-//const isMoment = require("moment");
+// const isMoment = require("moment");
 
 
 //insert data for reservation
 controller.route("/addReservation").post((req, res) => {
     //const reservationID = uuidv4();
+
     const reservationID = req.body.reservationID;
     const customerName = req.body.customerName;
     const contactNumber = Number(req.body.contactNumber);
@@ -60,3 +61,5 @@ controller.route("/displayReservation").get((req, res) => {
         console.log(err);
     })
 })
+
+module.exports = controller; 
