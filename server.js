@@ -13,8 +13,8 @@ app.use(cors())
 const PORT = 8000;
 const URL = process.env.MONGODB_URL;
 
-const Routes = require("./controller/RentalController");
-app.use("/api", Routes);
+const Rental = require("./controller/RentalController");
+app.use("/api", Rental);
 
 const Reservation = require("./controller/ReservationController");
 app.use("/api", Reservation);
