@@ -1,7 +1,7 @@
 const router = require("express").Router();
 let Vehicle = require("../model/VehicleModel");
 const { v4: uuidv4 } = require("uuid");
-//const moment = require('moment');
+const moment = require('moment');
 //const multer = require('multer');
 //const { route } = require("express/lib/application");
 //const upload = multer({ dest: 'uploads/' })
@@ -71,40 +71,22 @@ router.route("/addVehicle").post((req, res) => {
 })
 
 //view data vehicle
-router.route("/view").get((req, res) => {
-    Vehicle.find().then((Vehicles) => {
-        res.json(Vehicles)
-    }).catch((err) => {
-        console.log(err)
-    })
-})
+
+router.get("/get",async (req,res) => {
+
+    try{
+        const response = await Vehicle.find();
+        return res.status(200).send({
+            status:"Success",
+            data: response
+        });
+    }catch(error){
+        console.log("Something went wrong while DB connection");
+        return { ok: false};
+    }
+});
 
 
-router.route("/searchPerDayRentalPrice/:vehicle/:model").get((req, res) => {
 
-    let val = req.params.vehicle.trim();
-    let val1 = req.params.model.trim();
-
-
-    //{$regex: "^" + val + ".*"}this will get to the value starting at the begining of list 
-    Vehicle.find({ VehicleType: { $regex: ".*" + val + ".*", $options: 'i' } }).then((vehicles) => {
-        //res.json(rentals)
-        if (vehicles != null) {
-            Vehicle.findOne({ VehicleModel: { $regex: "^" + val1 + ".*", $options: 'i' } }).then((vehicles) => {
-                res.json(vehicles.RatePDay);
-
-            })
-                .catch((err) => {
-                    console.log(err);
-
-                })
-        }
-
-    }).catch((err) => {
-        console.log(err);
-    })
-
-
-})
 
 module.exports = router;
