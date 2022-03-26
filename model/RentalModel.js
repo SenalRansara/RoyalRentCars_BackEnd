@@ -72,6 +72,10 @@ const rentalSchema = new Schema({
         maxlength: 10,
         minlength: 10
     },
+    createdAt:
+    {
+        type:Date,
+    },
 
 })
 

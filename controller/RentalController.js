@@ -17,13 +17,12 @@ router.post("/rental/save",async (req,res)=>{
     const customerAddress = req.body.customerAddress;
     const customerNIC = req.body.customerNIC;
     const contactNo = req.body.contactNo;
-
+    const createdAt = new Date();
 
 const newRental = new Rental({
     id,
     from,
     to,
-    recDes,
     vehicleType,
     vehicleModel,
     pickAddress,
@@ -32,7 +31,8 @@ const newRental = new Rental({
     customerName,
     customerAddress,
     customerNIC,
-    contactNo
+    contactNo,
+    createdAt
 
 })
 
@@ -46,7 +46,7 @@ try {
                     //console.log(doc);
                     return res.status(201).send({ message: "new Rental Added" });
             } catch (err) {
-                //console.log("error while saving");
+                console.log("error while saving", err);
                 return res.status(500).send({ status: "Internal Server Error" });
             }
         }
@@ -58,7 +58,6 @@ try {
     console.log("error", err)
 }
 });
-
 
 //router for retrieve data for Added Rental Details
 router.get("/rental/get",async (req,res) => {
@@ -74,3 +73,4 @@ router.get("/rental/get",async (req,res) => {
         return { ok: false};
     }
 });
+module.exports = router; 
