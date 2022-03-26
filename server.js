@@ -13,14 +13,23 @@ app.use(cors())
 const PORT = 8000;
 const URL = process.env.MONGODB_URL;
 
+//Rental management - Senal
 const Rental = require("./controller/RentalController");
 app.use("/api", Rental);
 
+//Reservation management - Ravindu
 const Reservation = require("./controller/ReservationController");
 app.use("/api", Reservation);
 
+//Vehicle management - Kaveen
 const Vehicle = require("./controller/VehicleController");
 app.use("/api", Vehicle);
+
+//Employee management
+const Employee = require("./controller/EmployeeController");
+app.use("/api", Employee);
+
+
 
 
 
