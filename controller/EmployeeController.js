@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const Employee = require("../model/employeeModel")
-const Resignation = require("../model/resignationModel");
+// const Resignation = require("../model/resignationModel");
 const { v4: uuidv4 } = require("uuid");
 
 //router for add an employee
@@ -32,7 +32,6 @@ router.post("/employee", async (req, res) => {
         nic,
         designation,
         currAdd,
-        permAdd,
         mobileNo,
         homeContact,
         empPic,
@@ -62,3 +61,4 @@ router.post("/employee", async (req, res) => {
         console.log("error", err)
     }
 });
+module.exports = router;
