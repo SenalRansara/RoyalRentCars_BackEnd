@@ -18,14 +18,14 @@ const Rental = require("./controller/RentalController");
 app.use("/api", Rental);
 
 //Reservation management - Ravindu
-const Reservation = require("./controller/ReservationController");
+const Reservation = require("./controller/reservationController");
 app.use("/api", Reservation);
 
 //Vehicle management - Kaveen
 const Vehicle = require("./controller/VehicleController");
 app.use("/api", Vehicle);
 
-//Employee management
+//Employee management - Chamoth
 const Employee = require("./controller/EmployeeController");
 app.use("/api", Employee);
 
