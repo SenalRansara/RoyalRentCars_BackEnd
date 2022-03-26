@@ -61,4 +61,18 @@ router.post("/employee", async (req, res) => {
         console.log("error", err)
     }
 });
+
+//router for retrieve and send all the employee records
+router.get("/employee", async (req, res) => {
+
+    try {
+        const response = await Employee.find();
+        return res.status(200).send({ status: "Success", data: response });
+    } catch (error) {
+        console.log("Something went wrong while connecting to DB");
+        return { ok: false };
+    }
+
+});
+
 module.exports = router;
