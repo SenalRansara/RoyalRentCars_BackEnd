@@ -10,6 +10,7 @@ const reservationSchema = new Schema({
         unique: true
     },
     
+    
     customerName : {
         type : String,
         required : true,
