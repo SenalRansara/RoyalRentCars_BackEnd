@@ -19,6 +19,9 @@ app.use("/api", Routes);
 const Reservation = require("./controller/ReservationController");
 app.use("/api", Reservation);
 
+const Vehicle = require("./controller/VehicleController");
+app.use("/api", Vehicle);
+
 
 
 mongoose.connect(URL).then(()=> {
