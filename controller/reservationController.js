@@ -8,7 +8,6 @@ let Reservation = require("../model/reservationModel");
 //insert data for reservation
 controller.route("/addReservation").post((req, res) => {
     //const reservationID = uuidv4();
-
     const reservationID = req.body.reservationID;
     const customerName = req.body.customerName;
     const contactNumber = Number(req.body.contactNumber);
