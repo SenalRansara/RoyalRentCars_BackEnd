@@ -30,6 +30,7 @@ const rentalSchema = new Schema({
     vehicleModel: {
         type: String,
         required: true,
+        enum: ['Toyota', 'Honda', 'Mitsubishi','Rosa']
     },
 
     pickAddress: {
