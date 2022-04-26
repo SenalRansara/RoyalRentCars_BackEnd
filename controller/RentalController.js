@@ -73,4 +73,22 @@ router.get("/rental/get",async (req,res) => {
         return { ok: false};
     }
 });
+
+//router for delete rental 
+router.post("/rental/remove", async (req, res) => {
+    const rentalId = req.body.id;
+
+    // console.log(employeeId, "<<<<<<<<<<<<<<<<deleteeeeeeee");
+
+    if (rentalId) {
+        const response = await Rental.findOneAndDelete({ id: rentalId }).then(() => {
+            return res.status(200).send({ status: "Success" });
+        }).catch((err) => {
+            // console.log(err);
+            return res.status(500).send({ status: "Internal Server Error" });
+        })
+    }
+    return res.status(400).send({ status: "Invalid Request" });
+
+});
 module.exports = router; 
