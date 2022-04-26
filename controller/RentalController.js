@@ -78,13 +78,10 @@ router.get("/rental/get",async (req,res) => {
 router.post("/rental/remove", async (req, res) => {
     const rentalId = req.body.id;
 
-    // console.log(employeeId, "<<<<<<<<<<<<<<<<deleteeeeeeee");
-
     if (rentalId) {
         const response = await Rental.findOneAndDelete({ id: rentalId }).then(() => {
             return res.status(200).send({ status: "Success" });
         }).catch((err) => {
-            // console.log(err);
             return res.status(500).send({ status: "Internal Server Error" });
         })
     }
