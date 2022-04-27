@@ -73,6 +73,60 @@ router.get("/rental/get",async (req,res) => {
         return { ok: false};
     }
 });
+Recipe
+
+//router for update rental details
+router.put("/rental/update/:id",async (req,res) =>{
+    const rentalId = req.params.id;
+
+    const{
+        id,
+        from,
+        to,
+        vehicleType,
+        vehicleModel,
+        pickAddress,
+        paymentAmount,
+        paymentMethod,
+        customerName,
+        customerAddress,
+        customerNIC,
+        contactNo,
+        createdAt
+    } = req.body;
+
+    const Payload = {
+        id,
+        from,
+        to,
+        vehicleType,
+        vehicleModel,
+        pickAddress,
+        paymentAmount,
+        paymentMethod,
+        customerName,
+        customerAddress,
+        customerNIC,
+        contactNo,
+        createdAt,
+    }
+    //console.log("id123",recId);
+
+    if(rentalId){
+        const response = await Rental.findOneAndUpdate({id: rentalId }, Payload).then(() =>{
+            return res.status(200).send({
+                status:"Rental Successfully Updated!!"
+            });
+        }).catch((err) =>{
+            return res.status(500).send({
+                status:"Internal server Error"
+            });
+        })
+    }
+    return res.status(400).send({
+        status:"Invalid Request"
+    })
+})
 
 //router for delete rental 
 router.post("/rental/remove", async (req, res) => {
