@@ -73,7 +73,6 @@ router.get("/rental/get",async (req,res) => {
         return { ok: false};
     }
 });
-Recipe
 
 //router for update rental details
 router.put("/rental/update/:id",async (req,res) =>{
@@ -129,8 +128,8 @@ router.put("/rental/update/:id",async (req,res) =>{
 })
 
 //router for delete rental 
-router.post("/rental/remove", async (req, res) => {
-    const rentalId = req.body.id;
+router.post("/rental/delete/:id", async (req, res) => {
+    const rentalId = req.params.id;
 
     if (rentalId) {
         const response = await Rental.findOneAndDelete({ id: rentalId }).then(() => {
