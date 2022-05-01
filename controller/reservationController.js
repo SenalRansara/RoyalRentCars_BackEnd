@@ -140,4 +140,19 @@ controller.route("/updateReservation/:RID").put(async (req, res) => {
 })
 
 
+//to delete a specific reservation from database
+controller.route("/deleteReservation/:RID").post(async (req, res) => {
+    let RID = req.params.RID;
+    console.log("RID", RID);
+    console.log("request", req.body);
+
+    await Reservation.findOneAndDelete({ reservationID: RID })
+        .then(() => {
+            res.status(200).send({ status: "Reservation Record deleted" });
+        }).catch(() => {
+            console.log(err);
+            res.status(500).send({ status: "Error with deleting reservation record", error: err.message });
+        })
+})
+
 module.exports = controller; 
