@@ -61,4 +61,83 @@ controller.route("/displayReservation").get((req, res) => {
     })
 })
 
+//To retrieve the reservation details of a specific reservation id 
+controller.route("/getReservation/:RID").get(async (req, res) => {
+
+    let RID = req.params.RID;
+
+    const reservation = await Reservation.findOne({ reservationID: RID })
+        .then((reservation) => {
+            if (reservation != null) {
+                res.status(200).send({ status: "Reservation fetched", reservation: reservation })
+
+            } else {
+                res.status(500).send({ status: "Error with get Reservation", error: err.message });
+
+            }
+        }).catch((err) => {
+            console.log(err.message);
+            res.status(500).send({ status: "Error with get Reservation", error: err.message });
+        })
+
+})
+
+//to update the reservation details
+controller.route("/updateReservation/:RID").put(async (req, res) => {
+    console.log("reques")
+    let RID = req.params.RID;
+    console.log("RID", RID);
+    console.log("request", req.body);
+
+    //we have to fetch the new updating details coming from the front end here-new feature called d structure
+
+    const {
+       // reservationid,
+        customerName,
+        contactNumber,
+        nic,
+        address,
+        email,
+        eventType,
+        vehicleType,
+        from,
+        to,
+        numberOfVehivles,
+        deposit,
+        advancedPayment,
+        totalReservation,
+        remarks
+
+    } = req.body;//we call this as dStructure
+
+    const updateReservation = {
+        //reservationid,
+        RID,
+        customerName,
+        contactNumber,
+        nic,
+        address,
+        email,
+        eventType,
+        vehicleType,
+        from,
+        to,
+        numberOfVehivles,
+        deposit,
+        advancedPayment,
+        totalReservation,
+        remarks
+    }//create a object containing the data that needs to be updated
+
+    //we have to pass the primary key and then value to be passed
+    const updateReserve = await Reservation.findOneAndUpdate({ reservationID: RID }, updateReservation)
+        .then(() => {
+            res.status(200).send({ status: "Reservation Record updated" })//sending details of the updated data back to front end
+        }).catch((err) => {
+            console.log(err);
+            res.status(500).send({ status: "Server error Error with updating data", error: err.message });
+        })
+})
+
+
 module.exports = controller; 
