@@ -7,7 +7,7 @@ const moment = require('moment');
 //const upload = multer({ dest: 'uploads/' })
 
 
-//add vehicle details and owner details
+//add vehicle details
 
 router.route("/addVehicle").post((req, res) => {
 
@@ -33,15 +33,9 @@ router.route("/addVehicle").post((req, res) => {
     const vehPic = req.body.imgPath;
     const vehDoc = req.body.vehDoc;
 
-    const newVehicle = new Vehicle({
+const newVehicle = new Vehicle({
 
-        VehicleID,
-        OwnerName,
-        OwnerNIC,
-        TeleNo,
-        Address,
-        Email,
-        Date,
+        id,
         VehicleRegNo,
         VehicleModel,
         VehicleType,
@@ -56,19 +50,30 @@ router.route("/addVehicle").post((req, res) => {
         YearsRent,
         vehPic,
         vehDoc
-    })
-
-
-    newVehicle.save().then(() => {
-        console.log(req);
-        res.json("Vehicle added");
-
-    }).catch((err) => {
-        console.log(err);
-        return res.status(400).send({ status: "Vehicle already exist!" });
-    })
-
 })
+
+//implementing method for adding rental data
+try {
+    Vehicle.find({ id: newVehicle.id }, async (err, doc) => {
+        if (Object.keys(doc).length == 0) {
+            try {
+                let response = await newVehicle.save();
+                if (response)
+                    //console.log(doc);
+                    return res.status(201).send({ message: "new Vehicle Added" });
+            } catch (err) {
+                console.log("error while saving", err);
+                return res.status(500).send({ status: "Internal Server Error" });
+            }
+        }
+        else {
+            return res.status(400).send({ status: "Vehicle already exist!" });
+        }
+    });
+} catch (err) {
+    console.log("error", err)
+}
+});
 
 //view data vehicle
 

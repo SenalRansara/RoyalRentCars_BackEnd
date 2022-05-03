@@ -4,37 +4,13 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const vehicleSchema = new Schema({
 
-    OwnerName: {
+    id: {
         type: String,
-    },
-
-    OwnerNIC: {
-        type: String,
-    },
-
-    TeleNo: {
-        type: Number,
-    },
-
-    Email: {
-        type: String,
-    },
-
-    Address: {
-        type: String,
-    },
-
-    Date: {
-        type: String,
-    },
-
-    VehicleID: {
-        type: String,
+        required: true
     },
 
     VehicleRegNo: {
         type: String,
-        unique: true
     },
 
     VehicleModel: {
@@ -93,16 +69,6 @@ const vehicleSchema = new Schema({
 })
 
 
-// // Getter
-// vehicleSchema.path('RatePDay').get(function(num) {
-//     return (num / 100).toFixed(2);
-//   });
+const Vehicle = mongoose.model("Vehicle", vehicleSchema);
 
-//   // Setter
-//   vehicleSchema.path('RatePDay').set(function(num) {
-//     return ((num * 100)/100).toFixed(2);
-//   });
-
-const vehicle = mongoose.model("vehicle", vehicleSchema);
-
-module.exports = vehicle;
+module.exports = Vehicle;
