@@ -1,23 +1,14 @@
 const router = require("express").Router();
-let Vehicle = require("../model/VehicleModel");
+const Vehicle = require("../model/VehicleModel");
 const { v4: uuidv4 } = require("uuid");
-const moment = require('moment');
-//const multer = require('multer');
-//const { route } = require("express/lib/application");
-//const upload = multer({ dest: 'uploads/' })
+// const moment = require('moment');
+// const res = require("express/lib/response");
 
 
 //add vehicle details
 
-router.route("/addVehicle").post((req, res) => {
+router.post("/addVehicle",async (req, res) => {
 
-    const VehicleID = uuidv4();
-    const OwnerName = req.body.OwnerName;
-    const OwnerNIC = req.body.OwnerNIC;
-    const TeleNo = req.body.TeleNo;
-    const Address = req.body.Address;
-    const Email = req.body.Email;
-    const Date = moment(req.body.Date).format('YYYY-MM-DD');
     const VehicleRegNo = req.body.VehicleRegNo;
     const VehicleModel = req.body.VehicleModel;
     const VehicleType = req.body.VehicleType;
@@ -30,12 +21,11 @@ router.route("/addVehicle").post((req, res) => {
     const NoOfSeats = req.body.NoOfSeats;
     const RatePDay = req.body.RatePDay;
     const YearsRent = req.body.YearsRent;
-    const vehPic = req.body.imgPath;
-    const vehDoc = req.body.vehDoc;
+    // const vehPic = req.body.imgPath;
+    // const vehDoc = req.body.vehDoc;
 
 const newVehicle = new Vehicle({
 
-        id,
         VehicleRegNo,
         VehicleModel,
         VehicleType,
@@ -47,14 +37,14 @@ const newVehicle = new Vehicle({
         AirC,
         NoOfSeats,
         RatePDay,
-        YearsRent,
-        vehPic,
-        vehDoc
+        YearsRent
+        // vehPic,
+        // vehDoc
 })
 
 //implementing method for adding rental data
 try {
-    Vehicle.find({ id: newVehicle.id }, async (err, doc) => {
+    Vehicle.find({ VehicleRegNo: newVehicle.VehicleRegNo }, async (err, doc) => {
         if (Object.keys(doc).length == 0) {
             try {
                 let response = await newVehicle.save();
@@ -77,7 +67,8 @@ try {
 
 //view data vehicle
 
-router.get("/get",async (req,res) => {
+router.get("/viewVehicle",async (req,res) => {
+    console.log("request", req);
 
     try{
         const response = await Vehicle.find();
@@ -91,7 +82,70 @@ router.get("/get",async (req,res) => {
     }
 });
 
+//router for update vehicle details
 
+router.put("/updateVehicle/:id",async (req,res) =>{
+    const vehicleId = req.params.id;
+    // console.log("***",vehicleId)
+    const{
 
+        VehicleRegNo,
+        VehicleModel,
+        VehicleType,
+        VehicleBrand,
+        Mileage,
+        InsType,
+        InsComName,
+        Transmission,
+        AirC,
+        NoOfSeats,
+        RatePDay,
+        YearsRent
+        // vehPic,
+        // vehDoc
+    } = req.body;
 
+    const Payload = {
+        
+        VehicleRegNo,
+        VehicleModel,
+        VehicleType,
+        VehicleBrand,
+        Mileage,
+        InsType,
+        InsComName,
+        Transmission,
+        AirC,
+        NoOfSeats,
+        RatePDay,
+        YearsRent
+        // vehPic,
+        // vehDoc
+    }
+    // console.log("AAA",Payload)
+
+    if(vehicleId){
+        const response = await Vehicle.findOneAndUpdate(vehicleId, Payload)
+           if(response){
+               res.status(201).send(response)
+           }else{
+               res.status(500).send("error");
+           }
+    }
+})
+
+//router for delete vehicle
+
+router.delete("/deleteVehicle/:id", async (req, res) => {
+    const vehicleId = req.params.id;
+
+    if (vehicleId) {
+        const response = await Vehicle.findOneAndDelete({ id: vehicleId }).then(() => {
+            return res.status(200).send({ status: "Success" });
+        }).catch((err) => {
+            return res.status(500).send({ status: "Internal Server Error" });
+        })
+    }
+
+});
 module.exports = router;
