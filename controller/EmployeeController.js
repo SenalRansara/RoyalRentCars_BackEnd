@@ -62,6 +62,7 @@ router.post("/employee", async (req, res) => {
     }
 });
 
+
 //router for retrieve and send all the employee records
 router.get("/employee", async (req, res) => {
 
@@ -73,6 +74,82 @@ router.get("/employee", async (req, res) => {
         return { ok: false };
     }
 
+});
+
+
+//router for update an employee details
+router.put("/employee/update/:empId",async (req,res) =>{
+    const empId = req.params.empId;
+    // console.log("employee idd", empId);
+    // console.log("payload cameeee", req.body);
+
+    const{
+        fName,
+        lName,
+        gender,
+        DOB,
+        email,
+        maritalStat,
+        nic,
+        designation,
+        currAdd,
+        mobileNo,
+        homeContact,
+        empPic,
+        cv
+    } = req.body;
+
+    const employeePayload = {
+        fName,
+        lName,
+        gender,
+        DOB,
+        email,
+        maritalStat,
+        nic,
+        designation,
+        currAdd,
+        mobileNo,
+        homeContact,
+        empPic,
+        cv
+    }
+    //console.log("id123",recId);
+
+    if(empId) {
+        try{
+            const response = await Employee.findOneAndUpdate({empId: empId }, employeePayload);
+            console.log("res>>", response)
+            if (response != null){
+                return res.status(200).send({status:"Employee Successfully updated!"});
+            }
+            return res.status(400).send({status:"Invalid Employee"})
+        }
+        catch(err){
+            return res.status(500).send({status:"Internal server Error"});
+        }
+    }
+});
+
+
+//router for delete an employee details
+router.post("/employee/delete/:empId", async (req, res) => {
+    const empId = req.params.empId;
+    console.log("res>>",req.params.empId);
+
+    if (empId) {
+        try{
+            const response = await Employee.findOneAndDelete({ empId: empId });
+            console.log("res>>", response)
+            if (response != null){
+                return res.status(200).send({status:"Employee Successfully Deleted!"});
+            }
+            return res.status(400).send({status:"Invalid Employee"})
+        }
+        catch(err){
+            return res.status(500).send({status:"Internal server Error"});
+        }
+    }
 });
 
 module.exports = router;
