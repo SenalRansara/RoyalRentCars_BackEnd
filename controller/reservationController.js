@@ -130,7 +130,7 @@ controller.route("/updateReservation/:RID").put(async (req, res) => {
     }//create a object containing the data that needs to be updated
 
     //we have to pass the primary key and then value to be passed
-    const updateReserve = await Reservation.findOneAndUpdate({ reservationID: RID }, updateReservation)
+     await Reservation.findOneAndUpdate({ reservationID: RID }, updateReservation)
         .then(() => {
             res.status(200).send({ status: "Reservation Record updated" })//sending details of the updated data back to front end
         }).catch((err) => {
