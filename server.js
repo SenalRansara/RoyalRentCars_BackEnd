@@ -20,6 +20,8 @@ app.use("/api", Rental);
 //Reservation management - Ravindu
 const Reservation = require("./controller/reservationController");
 app.use("/api", Reservation);
+const signupCon = require('./controller/signupController');
+app.use("/api", signupCon);
 
 //Vehicle management - Kaveen
 const Vehicle = require("./controller/VehicleController");
