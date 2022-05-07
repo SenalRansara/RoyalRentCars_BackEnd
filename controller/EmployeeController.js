@@ -41,7 +41,6 @@ router.post("/employee", async (req, res) => {
     try {
         Employee.find({ nic: newEmployee.nic }, async (err, doc) => {
             if (Object.keys(doc).length == 0) {
-
                 try {
                     let response = await newEmployee.save();
                     if (response)
@@ -65,7 +64,6 @@ router.post("/employee", async (req, res) => {
 
 //router for retrieve and send all the employee records
 router.get("/employee", async (req, res) => {
-
     try {
         const response = await Employee.find();
         return res.status(200).send({ status: "Success", data: response });
@@ -80,8 +78,6 @@ router.get("/employee", async (req, res) => {
 //router for update an employee details
 router.put("/employee/update/:empId",async (req,res) =>{
     const empId = req.params.empId;
-    // console.log("employee idd", empId);
-    // console.log("payload cameeee", req.body);
 
     const{
         fName,
@@ -114,7 +110,6 @@ router.put("/employee/update/:empId",async (req,res) =>{
         empPic,
         cv
     }
-    //console.log("id123",recId);
 
     if(empId) {
         try{
@@ -135,7 +130,6 @@ router.put("/employee/update/:empId",async (req,res) =>{
 //router for delete an employee details
 router.post("/employee/delete/:empId", async (req, res) => {
     const empId = req.params.empId;
-    console.log("res>>",req.params.empId);
 
     if (empId) {
         try{

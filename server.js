@@ -29,7 +29,9 @@ app.use("/api", Vehicle);
 const Employee = require("./controller/EmployeeController");
 app.use("/api", Employee);
 
-
+//Login management - Chamoth
+const loginRouter = require("./controller/Login.js");
+app.use("/login", loginRouter);
 
 
 
