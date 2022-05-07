@@ -9,6 +9,7 @@ const { v4: uuidv4 } = require("uuid");
 
 router.post("/addVehicle",async (req, res) => {
 
+    const VId = uuidv4();
     const VehicleRegNo = req.body.VehicleRegNo;
     const VehicleModel = req.body.VehicleModel;
     const VehicleType = req.body.VehicleType;
@@ -21,11 +22,13 @@ router.post("/addVehicle",async (req, res) => {
     const NoOfSeats = req.body.NoOfSeats;
     const RatePDay = req.body.RatePDay;
     const YearsRent = req.body.YearsRent;
+    const nic = req.body.nic;
     // const vehPic = req.body.imgPath;
     // const vehDoc = req.body.vehDoc;
 
 const newVehicle = new Vehicle({
 
+        VId,
         VehicleRegNo,
         VehicleModel,
         VehicleType,
@@ -37,22 +40,24 @@ const newVehicle = new Vehicle({
         AirC,
         NoOfSeats,
         RatePDay,
-        YearsRent
+        YearsRent,
+        nic
         // vehPic,
         // vehDoc
 })
 
-//implementing method for adding rental data
+//implementing method for adding vehicle data
 try {
-    Vehicle.find({ VehicleRegNo: newVehicle.VehicleRegNo }, async (err, doc) => {
+    Vehicle.find({ nic: newVehicle.nic }, async (err, doc) => {
         if (Object.keys(doc).length == 0) {
+
             try {
                 let response = await newVehicle.save();
                 if (response)
                     //console.log(doc);
                     return res.status(201).send({ message: "new Vehicle Added" });
             } catch (err) {
-                console.log("error while saving", err);
+                // console.log("error while saving", err);
                 return res.status(500).send({ status: "Internal Server Error" });
             }
         }
@@ -61,14 +66,14 @@ try {
         }
     });
 } catch (err) {
-    console.log("error", err)
+    // console.log("error", err)
 }
 });
 
 //view data vehicle
 
 router.get("/viewVehicle",async (req,res) => {
-    console.log("request", req);
+    // console.log("request", req);
 
     try{
         const response = await Vehicle.find();
@@ -84,9 +89,9 @@ router.get("/viewVehicle",async (req,res) => {
 
 //router for update vehicle details
 
-router.put("/updateVehicle/:id",async (req,res) =>{
-    const vehicleId = req.params.id;
-    // console.log("***",vehicleId)
+router.put("/updateVehicle/:VId",async (req,res) =>{
+    const VId = req.params.VId;
+    // console.log("***",VId)
     const{
 
         VehicleRegNo,
@@ -100,13 +105,14 @@ router.put("/updateVehicle/:id",async (req,res) =>{
         AirC,
         NoOfSeats,
         RatePDay,
-        YearsRent
+        YearsRent,
+        nic
         // vehPic,
         // vehDoc
     } = req.body;
 
     const Payload = {
-        
+    
         VehicleRegNo,
         VehicleModel,
         VehicleType,
@@ -118,33 +124,46 @@ router.put("/updateVehicle/:id",async (req,res) =>{
         AirC,
         NoOfSeats,
         RatePDay,
-        YearsRent
+        YearsRent,
+        nic
         // vehPic,
         // vehDoc
     }
-    // console.log("AAA",Payload)
+    
 
-    if(vehicleId){
-        const response = await Vehicle.findOneAndUpdate(vehicleId, Payload)
-           if(response){
-               res.status(201).send(response)
-           }else{
-               res.status(500).send("error");
-           }
+    if(VId) {
+        try{
+            const response = await Vehicle.findOneAndUpdate({VId: VId }, Payload);
+            console.log("res>>", response)
+            if (response != null){
+                return res.status(200).send({status:"Vehicle Successfully updated!"});
+            }
+            return res.status(400).send({status:"Invalid Vehicle"})
+        }
+        catch(err){
+            return res.status(500).send({status:"Internal server Error"});
+        }
     }
-})
+});
 
 //router for delete vehicle
 
-router.delete("/deleteVehicle/:id", async (req, res) => {
-    const vehicleId = req.params.id;
+router.delete("/deleteVehicle/:VId", async (req, res) => {
+    const vehicleId = req.params.VId;
+    console.log("res>>",req.params.vehicleId);
 
     if (vehicleId) {
-        const response = await Vehicle.findOneAndDelete({ id: vehicleId }).then(() => {
-            return res.status(200).send({ status: "Success" });
-        }).catch((err) => {
-            return res.status(500).send({ status: "Internal Server Error" });
-        })
+        try{
+            const response = await Vehicle.findOneAndDelete({ VId: vehicleId });
+            console.log("res>>", response)
+            if (response != null){
+                return res.status(200).send({status:"Vehicle Successfully Deleted!"});
+            }
+            return res.status(400).send({status:"Invalid Vehicle"})
+        }
+        catch(err){
+            return res.status(500).send({status:"Internal server Error"});
+        }
     }
 
 });
