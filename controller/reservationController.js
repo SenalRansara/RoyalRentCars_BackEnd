@@ -1,13 +1,10 @@
-// const router = require("express").Router();
 const controller = require("express").Router();
 let Reservation = require("../model/reservationModel");
-//const { v4: uuidv4 } = require("uuid");
-// const isMoment = require("moment");
+
 
 
 //insert data for reservation
 controller.route("/addReservation").post((req, res) => {
-    //const reservationID = uuidv4();
     const reservationID = req.body.reservationID;
     const customerName = req.body.customerName;
     const contactNumber = Number(req.body.contactNumber);
@@ -16,8 +13,6 @@ controller.route("/addReservation").post((req, res) => {
     const email = req.body.email;
     const eventType = req.body.eventType;
     const vehicleType = req.body.vehicleType;
-   // const from = isMoment(req.body.from).format('YYYY-MMMM-DD');
-   // const to = isMoment(req.body.to).format('YYYY-MMMM-DD');
    const from = Date.parse(req.body.from);
    const to = Date.parse(req.body.to);
     const numberOfVehivles = Number(req.body.numberOfVehivles);
@@ -52,7 +47,7 @@ controller.route("/addReservation").post((req, res) => {
     })
 })
 
-//retrieve all reservation details
+//Retrieve all reservation details
 controller.route("/displayReservation").get((req, res) => {
     Reservation.find().then((reservation) => {
         res.json(reservation)
@@ -84,15 +79,9 @@ controller.route("/getReservation/:RID").get(async (req, res) => {
 
 //to update the reservation details
 controller.route("/updateReservation/:RID").put(async (req, res) => {
-    console.log("reques")
     let RID = req.params.RID;
-    console.log("RID", RID);
-    console.log("request", req.body);
-
-    //we have to fetch the new updating details coming from the front end here-new feature called d structure
 
     const {
-       // reservationid,
         customerName,
         contactNumber,
         nic,
@@ -108,10 +97,10 @@ controller.route("/updateReservation/:RID").put(async (req, res) => {
         totalReservation,
         remarks
 
-    } = req.body;//we call this as dStructure
+    } = req.body;
 
     const updateReservation = {
-        //reservationid,
+        
         RID,
         customerName,
         contactNumber,
@@ -127,12 +116,12 @@ controller.route("/updateReservation/:RID").put(async (req, res) => {
         advancedPayment,
         totalReservation,
         remarks
-    }//create a object containing the data that needs to be updated
+    }
 
-    //we have to pass the primary key and then value to be passed
+    
      await Reservation.findOneAndUpdate({ reservationID: RID }, updateReservation)
         .then(() => {
-            res.status(200).send({ status: "Reservation Record updated" })//sending details of the updated data back to front end
+            res.status(200).send({ status: "Reservation Record updated" })
         }).catch((err) => {
             console.log(err);
             res.status(500).send({ status: "Server error Error with updating data", error: err.message });
@@ -143,8 +132,7 @@ controller.route("/updateReservation/:RID").put(async (req, res) => {
 //to delete a specific reservation from database
 controller.route("/deleteReservation/:RID").post(async (req, res) => {
     let RID = req.params.RID;
-    console.log("RID", RID);
-    console.log("request", req.body);
+    
 
     await Reservation.findOneAndDelete({ reservationID: RID })
         .then(() => {
