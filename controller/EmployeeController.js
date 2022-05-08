@@ -114,7 +114,6 @@ router.put("/employee/update/:empId",async (req,res) =>{
     if(empId) {
         try{
             const response = await Employee.findOneAndUpdate({empId: empId }, employeePayload);
-            console.log("res>>", response)
             if (response != null){
                 return res.status(200).send({status:"Employee Successfully updated!"});
             }
@@ -134,7 +133,6 @@ router.post("/employee/delete/:empId", async (req, res) => {
     if (empId) {
         try{
             const response = await Employee.findOneAndDelete({ empId: empId });
-            console.log("res>>", response)
             if (response != null){
                 return res.status(200).send({status:"Employee Successfully Deleted!"});
             }
