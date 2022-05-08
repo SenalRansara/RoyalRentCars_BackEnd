@@ -11,7 +11,7 @@ router.route("/get/:un/:pass").get(async (req, res) => {
         .then((user) => {
             res.status(200).send({ status: "User fetched", login: user })
         }).catch(() => {
-            console.log(err.message);
+            
             res.status(500).send({ status: "Error with get user", error: err.message });
         })
 })
