@@ -10,7 +10,7 @@ app.use(express.json())
 
 app.use(cors())
 
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 const URL = process.env.MONGODB_URL;
 
 //Rental management - Senal
